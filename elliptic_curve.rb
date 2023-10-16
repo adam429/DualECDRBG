@@ -116,16 +116,17 @@ end
 
 if __FILE__ == $0
     e = EllipticCurve.new(5, 1, 23)
-    p = EllipticCurve.new(5, 1, 23).point(9,4)
-    q = EllipticCurve.new(5, 1, 23).point(4,4)
-    puts "e = #{e}"
-    puts "p = #{p}"
-    puts "-p = #{-p}"
-    puts "p-p = #{p-p}"
-    puts "q = #{q}"
-    puts "inf+q = #{p-p+q}"
-    puts "p+p+p+p = #{p+p+p+p}"
-    puts "4*p = #{4*p}"
+    p = e.point(9,4)
+    q = e.point(4,4)
+    
+    puts "e = #{e}"               # e = y^2 = x^3 + 5x + 1 mod 23
+    puts "p = #{p}"               # p = (9, 4)
+    puts "-p = #{-p}"             # -p = (9, 19)
+    puts "p-p = #{p-p}"           # p-p = (infinity)
+    puts "q = #{q}"               # q = (4, 4)
+    puts "inf+q = #{p-p+q}"       # inf+q = (4, 4)
+    puts "p+p+p+p = #{p+p+p+p}"   # p+p+p+p = (12, 8)
+    puts "4*p = #{4*p}"           # 4*p = (12, 8)    
 
     40.times do |i|
         puts "#{i+1} * q = #{q*(i+1)}"

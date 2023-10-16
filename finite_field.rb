@@ -219,28 +219,34 @@ if __FILE__ == $0
     a=FiniteField.new(8,23)
     b=FiniteField.new(13,23)
 
-    puts "a= #{a}"
-    puts "-a = #{-a}"
-    puts "b = #{b}"
-    puts "-b = #{-b}"
-    puts "a+b = #{a+b}"
-    puts "a-b = #{a-b}"
-    puts "a*b = #{a*b}"
-    puts "a/b = #{a/b}"
-    puts "a.inverse = #{a.inverse}"
-    puts "b.inverse = #{b.inverse}"
-    puts "a+1 = #{a+1}"
-    puts "1+a = #{1+a}"
-    puts "a-2 = #{a-2}"
-    puts "2-a = #{2-a}"
-    puts "a*3 = #{a*3}"
-    puts "3*a = #{3*a}"
-    puts "a/4 = #{a/4}"
-    puts "4/a = #{4/a}"
-    puts "a**-1 = #{a**-1}"
-    puts "2**a = #{2**a}"
-    puts "a**2 = #{a**2}"
-    puts "a**b = #{a**b}"
-    puts "a.sqrt = #{a.sqrt}"
-    puts "b.sqrt = #{b.sqrt}"
+    puts "a= #{a}"      # a= 8 mod 23
+    puts "-a = #{-a}"   # -a = 15 mod 23
+    puts "b = #{b}"     # b = 13 mod 23
+    puts "-b = #{-b}"   # -b = 10 mod 23
+    puts "a+b = #{a+b}" # a+b = 21 mod 23
+    puts "a-b = #{a-b}" # a-b = 18 mod 23
+    puts "a*b = #{a*b}" # a*b = 12 mod 23
+    puts "a/b = #{a/b}" # a/b = 13 mod 23
+    puts "a.inverse = #{a.inverse}" # a.inverse = 3 mod 23
+    puts "b.inverse = #{b.inverse}" # b.inverse = 16 mod 23
+    puts "a+1 = #{a+1}" # a+1 = 9 mod 23
+    puts "1+a = #{1+a}" # 1+a = 9 mod 23
+    puts "a-2 = #{a-2}" # a-2 = 6 mod 23
+    puts "2-a = #{2-a}" # 2-a = 17 mod 23
+    puts "a*3 = #{a*3}" # a*3 = 1 mod 23
+    puts "3*a = #{3*a}" # 3*a = 1 mod 23
+    puts "a/4 = #{a/4}" # a/4 = 2 mod 23
+    puts "4/a = #{4/a}" # 4/a = 12 mod 23
+    puts "a**-1 = #{a**-1}"   # a**-1 = 3 mod 23
+    puts "2**a = #{2**a}"     # 2**a = 3 mod 23
+    puts "a**2 = #{a**2}"     # a**2 = 18 mod 23
+    puts "a**b = #{a**b}"     # a**b = 18 mod 23
+    puts "a.sqrt = #{a.sqrt}" # a.sqrt = [13, 10]
+    puts "b.sqrt = #{b.sqrt}" # b.sqrt = [6, 17]
 end
+
+
+
+
+
+

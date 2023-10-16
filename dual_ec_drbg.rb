@@ -23,12 +23,6 @@ class DualECDRBG
     end
 
     def truncate(number, truncate_number)
-        # mask = ("F" * (number.to_s(16).size-truncate_number)).to_i(16)
-
-        # output = number & mask
-        
-        # return output
-
         return number & Config::TRUNCATE_MASK
     end
 

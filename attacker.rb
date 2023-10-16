@@ -25,8 +25,6 @@ def to_number(point)
 end
 
 def truncate(number)
-    # mask = ("F" * (number.to_s(16).size-Config::TRUNCATE_NUMBER)).to_i(16)
-
     return number & Config::TRUNCATE_MASK
 end
 
@@ -36,15 +34,7 @@ def calcState(rand_output1,rand_output2,multiplier,rand)
 
     # step 1 - untruncate
     (16**Config::TRUNCATE_NUMBER).times do |x|
-        # rand_str = rand_output1.to_s(16)
-        # rand_str = "0" + rand_str if rand_str.size < Config::SIZE_NUMBER-Config::TRUNCATE_NUMBER
-        # restore_x = (x.to_s(16) + rand_str).to_i(16)
-
         restore_x = (x << (Config::SIZE_NUMBER - Config::TRUNCATE_NUMBER)*4) + rand_output1
-
-        # puts "restore_x = #{restore_x.to_s(16)}"
-        # puts "size = #{restore_x.to_s(16).size}"
-        # todo speed up
 
         begin
             y = FiniteField.new((restore_x**3 + Config::EC_A*restore_x + Config::EC_B) % Config::EC_P,Config::EC_P).sqrt
@@ -70,10 +60,6 @@ def calcState(rand_output1,rand_output2,multiplier,rand)
         state, predict = predict_next(state,rand.p,rand.q)
 
         if predict == rand_output2
-            # puts "x = #{x}"
-            # puts "point[0] = #{point[0]}"
-            # puts "point[1] = #{point[1]}"
-            # puts "state = #{state}"
             puts "calc state time: #{Time.now - timestamp}"
             return state
         end
