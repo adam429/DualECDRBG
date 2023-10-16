@@ -1,4 +1,5 @@
 require './elliptic_curve.rb'
+require './config.rb'
 
 class DualECDRBG
     attr :ec_p, :ec_a, :ec_b, :p, :q, :truncate_number, :state
@@ -6,16 +7,15 @@ class DualECDRBG
         @state = seed
 
         # use secp256k1 elliptic curve
-        @ec_p = 0xfffffffffffffffffffffffffffffffffffffffffffffffffffffffefffffc2f
-        @ec_a = 0
-        @ec_b = 7
+        @ec_p = Config::EC_P
+        @ec_a = Config::EC_A
+        @ec_b = Config::EC_B
         @ec = EllipticCurve.new(ec_a, ec_b, ec_p)
 
-        @q = @ec.point(0x79be667ef9dcbbac55a06295ce870b07029bfcdb2dce28d959f2815b16f81798,
-                       0x483ada7726a3c4655da4fbfc0e1108a8fd17b448a68554199c47d08ffb10d4b8)
+        @q = @ec.point(Config::EC_GX, Config::EC_GY)
 
-        @p = 0x29 * @q
-        @truncate_number = 2  # means 2*4 = 8 bits
+        @p = Config::MULTIPLIER * @q
+        @truncate_number = Config::TRUNCATE_NUMBER
     end
 
     def to_number(point)  
@@ -23,11 +23,13 @@ class DualECDRBG
     end
 
     def truncate(number, truncate_number)
-        mask = ("F" * (number.to_s(16).size-truncate_number)).to_i(16)
+        # mask = ("F" * (number.to_s(16).size-truncate_number)).to_i(16)
 
-        output = number & mask
+        # output = number & mask
         
-        return output
+        # return output
+
+        return number & Config::TRUNCATE_MASK
     end
 
     def next
