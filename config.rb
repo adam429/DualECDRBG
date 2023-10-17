@@ -8,9 +8,17 @@ module Config
 
   ## Dual_EC_DRBG
   MULTIPLIER = 0x4290     # p = multiplier * q
-  TRUNCATE_NUMBER = 2   # means 2*4 = 8 bits
+  TRUNCATE_NUMBER = 2   # means 3*4 = 12 bits
   SIZE_NUMBER = 64      # 64*4 = 256 bits
 
   ## Pre-calculate mask
   TRUNCATE_MASK = 16**(SIZE_NUMBER-TRUNCATE_NUMBER)-1  # 0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+
+  ## cluster node
+  CLUSTER_NODES = [
+    "",
+    "",
+    "",
+    "",
+  ]
 end

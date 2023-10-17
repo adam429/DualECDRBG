@@ -101,6 +101,7 @@ rand_output2 = rand.next
 puts "rand.next = 0x#{rand_output1.to_s(16)}"
 puts "rand.next = 0x#{rand_output2.to_s(16)}"
 
+
 state = calcState(rand_output1,rand_output2,multiplier,rand)
 puts "state = 0x#{state.to_s(16)}"
 
