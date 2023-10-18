@@ -48,9 +48,11 @@ class AttackServer
 
 end
 
-# The object that handles requests on the server
-FRONT_OBJECT=AttackServer.new
+if __FILE__ == $0
+    # The object that handles requests on the server
+    FRONT_OBJECT=AttackServer.new
 
-DRb.start_service(URI, FRONT_OBJECT)
-# Wait for the drb server thread to finish before exiting.
-DRb.thread.join
+    DRb.start_service(URI, FRONT_OBJECT)
+    # Wait for the drb server thread to finish before exiting.
+    DRb.thread.join
+end

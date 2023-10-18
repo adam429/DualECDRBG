@@ -1,15 +1,18 @@
 require 'parallel'
 require 'drb'
 require './dual_ec_drbg.rb'
+require './cluster.rb'
 require './config.rb'
 
+
+$nodes = Cluster.new(Config::CLUSTER_NODES)
 
 # Brute force to find multiplier
 def calc_multiplier(p,q)
     timestamp = Time.now
 
     batch = Config::NODE_MUL_BATCH_SIZE
-    cluster = 4
+    cluster = Config::CLUSTER_NODES.size
     current_k = 1
 
     loop do
@@ -20,10 +23,14 @@ def calc_multiplier(p,q)
         current_k = current_k + batch*cluster
 
         # run task
-        result = task.map do |range|
-            puts "range: #{range.first} - #{range.last}"
-            calc_multiplier_runner(p,q,range)
-        end.compact
+        # result = task.map do |range|
+        #     puts "range: #{range.first} - #{range.last}"
+        #     calc_multiplier_runner(p,q,range)
+        # end.compact
+
+        puts "task = #{task.inspect}"
+        $nodes.run_calc_multiplier_runner(p,q,task)
+        result = $nodes.wait_result.compact
 
         if result.size > 0 then
             puts "calc multiplier time: #{Time.now - timestamp}"
@@ -81,12 +88,12 @@ end
 # brute force to find state
 def calcState(rand_output1,rand_output2,multiplier,rand)
     batch = Config::NODE_STATE_BATCH_SIZE
-    cluster = 4
+    cluster = Config::CLUSTER_NODES.size
     current_k = 0
 
     timestamp = Time.now
 
-    loop do
+    while current_k<16**Config::TRUNCATE_NUMBER do
         # generate task
         task = (0..cluster-1).map do |x|
             current_k+batch*x .. current_k+batch*x+(batch-1)
@@ -94,10 +101,14 @@ def calcState(rand_output1,rand_output2,multiplier,rand)
         current_k = current_k + batch*cluster
 
         # run task
-        result = task.map do |range|
-            puts "range: #{range.first} - #{range.last}"
-            calcState_runner(rand_output1,rand_output2,multiplier,rand,range)
-        end.compact
+        # result = task.map do |range|
+        #     puts "range: #{range.first} - #{range.last}"
+        #     calcState_runner(rand_output1,rand_output2,multiplier,rand,range)
+        # end.compact
+        puts "task = #{task.inspect}"
+        $nodes.run_calcState_runner(rand_output1,rand_output2,multiplier,rand,task)
+        result = $nodes.wait_result.compact
+
 
         if result.size > 0 then
             puts "calc state time: #{Time.now - timestamp}"
