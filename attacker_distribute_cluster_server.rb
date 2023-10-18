@@ -2,7 +2,7 @@ require 'drb/drb'
 require './attacker_distribute_cluster_client.rb'
 
 # The URI for the server to connect to
-URI="druby://localhost:8787"
+URI="druby://0.0.0.0:80"
 
 class AttackServer
     attr :status, :result
@@ -25,10 +25,12 @@ class AttackServer
         @status = "busy"
         @result = nil
 
+        puts "run_calc_multiplier_runner #{range}"
         Thread.new do
             @result = calc_multiplier_runner(p,q,range)
             @status = "idle"
         end
+
     end
 
     def run_calcState_runner(rand_output1,rand_output2,multiplier,rand,range)
@@ -37,6 +39,7 @@ class AttackServer
         @status = "busy"
         @result = nil
 
+        puts "run_calc_state_runner #{range}"
         Thread.new do
             @result = calcState_runner(rand_output1,rand_output2,multiplier,rand,range)
             @status = "idle"

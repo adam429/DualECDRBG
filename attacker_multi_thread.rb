@@ -7,7 +7,7 @@ require './config.rb'
 def calc_multiplier(p,q)
     timestamp = Time.now
 
-    batch = 1000
+    batch = Config::CALC_MUL_BATCH_SIZE
     process = Parallel.processor_count
     current_k = 1
 
@@ -54,7 +54,7 @@ end
 def calcState(rand_output1,rand_output2,multiplier,rand)
     timestamp = Time.now
 
-    batch = 16
+    batch = Config::CALC_STATE_BATCH_SIZE
     process = Parallel.processor_count
     current_k = 0
 

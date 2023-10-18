@@ -8,7 +8,7 @@ require './config.rb'
 def calc_multiplier(p,q)
     timestamp = Time.now
 
-    batch = 1000*16
+    batch = Config::NODE_MUL_BATCH_SIZE
     cluster = 4
     current_k = 1
 
@@ -35,7 +35,7 @@ end
 def calc_multiplier_runner(p,q,range)
     timestamp = Time.now
 
-    batch = 1000
+    batch = Config::CALC_MUL_BATCH_SIZE
     process = Parallel.processor_count
     current_k = range.first
 
@@ -80,7 +80,7 @@ end
 
 # brute force to find state
 def calcState(rand_output1,rand_output2,multiplier,rand)
-    batch = 16*16
+    batch = Config::NODE_STATE_BATCH_SIZE
     cluster = 4
     current_k = 0
 
@@ -110,7 +110,7 @@ def calcState_runner(rand_output1,rand_output2,multiplier,rand,range)
 
     timestamp = Time.now
 
-    batch = 16
+    batch = Config::CALC_STATE_BATCH_SIZE
     process = Parallel.processor_count
     current_k = range.first
 
