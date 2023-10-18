@@ -19,6 +19,33 @@ class AttackServer
         @result
     end
 
+    def reload_config(multiplier,truncate_number)
+        ## Dual_EC_DRBG
+
+        puts "multiplier = #{multiplier}"
+        puts "truncate_number = #{truncate_number}"
+
+        Config.send(:remove_const, :MULTIPLIER)
+        Config.send(:remove_const, :TRUNCATE_NUMBER)
+        Config.send(:remove_const, :TRUNCATE_MASK)
+
+        Config.const_set(:MULTIPLIER, multiplier)
+        Config.const_set(:TRUNCATE_NUMBER, truncate_number)
+        Config.const_set(:TRUNCATE_MASK,16**(Config::SIZE_NUMBER-Config::TRUNCATE_NUMBER)-1)
+
+        # Config::MULTIPLIER = config::MULTIPLIER
+        # Config::TRUNCATE_NUMBER = config::TRUNCATE_NUMBER
+        # Config::TRUNCATE_MASK = 16**(Config::SIZE_NUMBER-Config::TRUNCATE_NUMBER)-1
+        
+        # eval "Config::MULTIPLIER = #{config::MULTIPLIER}"
+        # eval "Config::TRUNCATE_NUMBER = #{config::TRUNCATE_NUMBER}"
+        # eval "Config::TRUNCATE_MASK = 16**(Config::SIZE_NUMBER-Config::TRUNCATE_NUMBER)-1"
+
+        puts "Config::MULTIPLIER = #{Config::MULTIPLIER}"
+        puts "Config::TRUNCATE_NUMBER = #{Config::TRUNCATE_NUMBER}"
+        puts "Config::TRUNCATE_MASK = #{Config::TRUNCATE_MASK}"
+    end
+
     def run_calc_multiplier_runner(p,q,range)
         raise "the node is not idle" if @status != "idle"
 

@@ -38,6 +38,12 @@ class Cluster
         end
     end
 
+    def reload_config()
+        @server.each do |server|
+            server.reload_config(Config::MULTIPLIER,Config::TRUNCATE_NUMBER)
+        end
+    end
+
 
     def all_idel?
         status = @server.map do |server|

@@ -5,7 +5,6 @@ require './cluster.rb'
 require './config.rb'
 
 
-$nodes = Cluster.new(Config::CLUSTER_NODES)
 
 # Brute force to find multiplier
 def calc_multiplier(p,q)
@@ -87,7 +86,8 @@ end
 
 # brute force to find state
 def calcState(rand_output1,rand_output2,multiplier,rand)
-    batch = Config::NODE_STATE_BATCH_SIZE
+
+    batch = Config::NODE_STATE_BATCH_SIZE 
     cluster = Config::CLUSTER_NODES.size
     current_k = 0
 
@@ -192,7 +192,9 @@ def predict_next(state,p,q)
 end
 
 if __FILE__ == $0
-
+    $nodes = Cluster.new(Config::CLUSTER_NODES)
+    $nodes.reload_config
+    
     rand = DualECDRBG.new(12345)
 
 

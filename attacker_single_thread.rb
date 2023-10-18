@@ -34,6 +34,7 @@ def calcState(rand_output1,rand_output2,multiplier,rand)
 
     # step 1 - untruncate
     (16**Config::TRUNCATE_NUMBER).times do |x|
+        puts x
         restore_x = (x << (Config::SIZE_NUMBER - Config::TRUNCATE_NUMBER)*4) + rand_output1
 
         begin
