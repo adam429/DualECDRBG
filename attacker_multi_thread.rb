@@ -124,41 +124,44 @@ def predict_next(state,p,q)
     return new_state,output
 end
 
-rand = DualECDRBG.new(12345)
+if __FILE__ == $0
+
+    rand = DualECDRBG.new(12345)
 
 
-puts "rand.p = #{rand.p.to_s(16)}"
-puts "rand.q = #{rand.q.to_s(16)}"   
+    puts "rand.p = #{rand.p.to_s(16)}"
+    puts "rand.q = #{rand.q.to_s(16)}"   
 
-puts "------------------------------------------"
-puts "--- calc_multiplier in p=multiplier*q ----"
-puts "------------------------------------------"
+    puts "------------------------------------------"
+    puts "--- calc_multiplier in p=multiplier*q ----"
+    puts "------------------------------------------"
 
-multiplier = calc_multiplier(rand.p,rand.q)
-puts "p=multiplier*q | multiplier= 0x#{multiplier.to_s(16)}"
+    multiplier = calc_multiplier(rand.p,rand.q)
+    puts "p=multiplier*q | multiplier= 0x#{multiplier.to_s(16)}"
 
-puts "------------------"
-puts "--- Calc State ---"
-puts "------------------"
-rand_output1 = rand.next
-rand_output2 = rand.next
-puts "rand.next = 0x#{rand_output1.to_s(16)}"
-puts "rand.next = 0x#{rand_output2.to_s(16)}"
+    puts "------------------"
+    puts "--- Calc State ---"
+    puts "------------------"
+    rand_output1 = rand.next
+    rand_output2 = rand.next
+    puts "rand.next = 0x#{rand_output1.to_s(16)}"
+    puts "rand.next = 0x#{rand_output2.to_s(16)}"
 
 
-state = calcState(rand_output1,rand_output2,multiplier,rand)
-puts "state = 0x#{state.to_s(16)}"
+    state = calcState(rand_output1,rand_output2,multiplier,rand)
+    puts "state = 0x#{state.to_s(16)}"
 
-puts "-------------------------------------"
-puts "--- Predict Next 10 Random Number ---"
-puts "-------------------------------------"
+    puts "-------------------------------------"
+    puts "--- Predict Next 10 Random Number ---"
+    puts "-------------------------------------"
 
-10.times do
-    state, predict = predict_next(state,rand.p,rand.q)
-    puts "predict rand.next = 0x#{predict.to_s(16)}"
-end
-puts "--------------------"
+    10.times do
+        state, predict = predict_next(state,rand.p,rand.q)
+        puts "predict rand.next = 0x#{predict.to_s(16)}"
+    end
+    puts "--------------------"
 
-10.times do
-    puts "actual rand.next = 0x#{rand.next.to_s(16)}"
+    10.times do
+        puts "actual rand.next = 0x#{rand.next.to_s(16)}"
+    end
 end

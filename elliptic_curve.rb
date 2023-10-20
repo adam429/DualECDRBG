@@ -115,6 +115,19 @@ class EllipticCurve
 end
 
 if __FILE__ == $0
+
+    e = EllipticCurve.new(5, 1, 23)
+    p = e.point(9,4)
+    q = e.point(4,4)
+    
+    puts "e = #{e}"               # e = y^2 = x^3 + 5x + 1 mod 23
+    puts "p = #{p}"               # p = (9, 4)
+    puts "-p = #{-p}"             # -p = (9, 19)
+    puts "p-p = #{p-p}"           # p-p = (infinity)
+    puts "inf+q = #{(p-p)+q}"     # (infinity)+q = (4, 4)
+    puts "4*p = #{4*p}"           # 4*p = (12, 8)    
+ 
+
     e = EllipticCurve.new(5, 1, 23)
     p = e.point(9,4)
     q = e.point(4,4)

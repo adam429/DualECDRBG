@@ -8,7 +8,7 @@ module Config
 
   ## Dual_EC_DRBG
   MULTIPLIER = 0x429     # p = multiplier * q
-  TRUNCATE_NUMBER = 2   # means 4*4 = 16 bits
+  TRUNCATE_NUMBER = 2    # means 4*4 = 16 bits
   SIZE_NUMBER = 64      # 64*4 = 256 bits
 
   ## Pre-calculate mask

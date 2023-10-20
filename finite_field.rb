@@ -221,6 +221,18 @@ if __FILE__ == $0
 
     puts "a= #{a}"      # a= 8 mod 23
     puts "-a = #{-a}"   # -a = 15 mod 23
+    puts "a+b = #{a+b}" # a+b = 21 mod 23
+    puts "a-b = #{a-b}" # a-b = 18 mod 23
+    puts "a*b = #{a*b}" # a*b = 12 mod 23
+    puts "a/b = #{a/b}" # a/b = 13 mod 23
+    puts "a.inverse = #{a.inverse}" # a.inverse = 3 mod 23
+    puts "a**-1 = #{a**-1}"   # a**-1 = 3 mod 23
+    puts "a**2 = #{a**2}"     # a**2 = 18 mod 23
+    puts "a.sqrt = #{a.sqrt}" # a.sqrt = [13, 10]
+
+
+    puts "a= #{a}"      # a= 8 mod 23
+    puts "-a = #{-a}"   # -a = 15 mod 23
     puts "b = #{b}"     # b = 13 mod 23
     puts "-b = #{-b}"   # -b = 10 mod 23
     puts "a+b = #{a+b}" # a+b = 21 mod 23

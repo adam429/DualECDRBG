@@ -15,39 +15,36 @@ class DualECDRBG
         @q = @ec.point(Config::EC_GX, Config::EC_GY)
 
         @p = Config::MULTIPLIER * @q
-        @truncate_number = Config::TRUNCATE_NUMBER
     end
 
     def to_number(point)  
         return point.x.n
     end
 
-    def truncate(number, truncate_number)
+    def truncate(number)
         return number & Config::TRUNCATE_MASK
     end
 
     def next
         r = to_number(@state * @p)
         @state = to_number(r * @p)
-
-        output_point = r * @q
-        # puts "@state = #{ @state.to_s(16) }"
-        # puts "output_point = #{output_point.to_s(16)}"
-     
-        output = truncate(to_number(output_point),@truncate_number)
-
-        return output
+       
+        return truncate(to_number(r * @q))
     end
 end
 
 if __FILE__ == $0
     rand = DualECDRBG.new(12345)
 
-    puts "rand.p = #{rand.p.to_s(16)}"
+    puts "rand.p = #{rand.p.to_s(16)}" 
     puts "rand.q = #{rand.q.to_s(16)}"   
+
+
+    rand = DualECDRBG.new(12345)
 
     puts "rand.next = #{rand.next.to_s(16)}"
     puts "rand.next = #{rand.next.to_s(16)}"
     puts "rand.next = #{rand.next.to_s(16)}"
     puts "rand.next = #{rand.next.to_s(16)}"
 end
+
