@@ -7,8 +7,8 @@ module Config
   EC_GY = 0x483ada7726a3c4655da4fbfc0e1108a8fd17b448a68554199c47d08ffb10d4b8
 
   ## Dual_EC_DRBG
-  # MULTIPLIER = 0x429     # p = multiplier * q
-  MULTIPLIER = 0xa5     # p = multiplier * q
+  MULTIPLIER = 0x429     # p = multiplier * q
+  # MULTIPLIER = 0xa5     # p = multiplier * q
   TRUNCATE_NUMBER = 2    # means 4*4 = 16 bits
   SIZE_NUMBER = 64      # 64*4 = 256 bits
 
