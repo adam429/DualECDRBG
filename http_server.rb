@@ -9,7 +9,7 @@ server.mount_proc '/attack' do |req, res|
     # POST request
     if req.request_method == 'POST' then
 
-        rand = DualECDRBG.new(12345)
+
 
         inp = JSON.parse(req.body.gsub(/\n/,''))
 
@@ -20,8 +20,18 @@ server.mount_proc '/attack' do |req, res|
         puts "------------------------------------------"
 
         e = EllipticCurve.new(Config::EC_A,Config::EC_B,Config::EC_P)
+
         p = e.point(inp["px"].to_i(16),inp["py"].to_i(16))
         q = e.point(inp["qx"].to_i(16),inp["qy"].to_i(16))
+
+
+        rand = DualECDRBG.new(12345)
+        rand.p = 0xa5 * q
+
+        puts "p = #{p}"
+        puts "q = #{q}"
+
+
     
         multiplier = calc_multiplier(p,q)
         puts "p=multiplier*q | multiplier= 0x#{multiplier.to_s(16)}"
@@ -36,6 +46,9 @@ server.mount_proc '/attack' do |req, res|
     
     
         state = calcState(rand_output1,rand_output2,multiplier,rand)
+
+        puts "state = #{state.to_s}"
+
         puts "state = 0x#{state.to_s(16)}"
     
         puts "-------------------------------------"

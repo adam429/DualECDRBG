@@ -2,7 +2,7 @@ require './elliptic_curve.rb'
 require './config.rb'
 
 class DualECDRBG
-    attr :ec_p, :ec_a, :ec_b, :p, :q, :truncate_number, :state
+    attr_accessor :ec_p, :ec_a, :ec_b, :p, :q, :truncate_number, :state
     def initialize(seed)
         @state = seed
 
