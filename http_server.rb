@@ -59,3 +59,4 @@ server.start
 trap('INT') { server.shutdown }
 
 
+# ruby http_server.rb >/dev/null 2>&1 &

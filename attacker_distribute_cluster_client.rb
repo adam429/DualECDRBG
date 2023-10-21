@@ -160,7 +160,7 @@ def calcState_runner(rand_output1,rand_output2,multiplier,rand,range)
                 # state = states[0] if states[0]==states[1] 
                 # raise "states[0] != states[1]" if states[0]!=states[1]
         
-                state, predict = predict_next(state,rand.p,rand.q)
+                predict = truncate(to_number(rand.q * state))
                 
                 if predict == rand_output2
                     ret = state
@@ -182,10 +182,9 @@ end
 def predict_next(state,p,q)
     ec = EllipticCurve.new(Config::EC_A,Config::EC_B,Config::EC_P)
 
-    r = to_number(state * p)
-    new_state = to_number(r * p)
+    new_state = to_number(state * p)
 
-    output_point = r * q
+    output_point = new_state * q
     output = truncate(to_number(output_point))
 
     return new_state,output

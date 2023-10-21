@@ -26,10 +26,22 @@ class DualECDRBG
     end
 
     def next
-        r = to_number(@state * @p)
-        @state = to_number(r * @p)
+        # puts "---------"
+        # puts "p=#{@p.to_s(16)}"
+        # puts "q=#{@q.to_s(16)}"
+        # puts "state=#{@state.to_s(16)}"
+        # puts "@state * p = #{(@state * @p).to_s(16)}"
+
+        @next_state = to_number(@state * @p)
+        output = truncate(to_number(@next_state * @q))
+        @state = @next_state
+
+        # puts "@state * p * q = #{(@next_state * @q).to_s(16)}"
+        # puts "output = #{output.to_s(16)}"
+        # puts "@state = #{state.to_s(16)}"
+        # puts "---------"
        
-        return truncate(to_number(r * @q))
+        return output
     end
 end
 

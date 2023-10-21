@@ -6,10 +6,20 @@ curl -X POST http://localhost:8000/attack  \
          "qx": "0x79be667ef9dcbbac55a06295ce870b07029bfcdb2dce28d959f2815b16f81798",
          "qy": "0x483ada7726a3c4655da4fbfc0e1108a8fd17b448a68554199c47d08ffb10d4b8", 
          "rand1" : "0x1d936baef8f07830895d3478a5c8bae129474702798db6a70d8025b7c580a", 
-         "rand2" : "0x1b55f36800db1ff5770a57989ef70dc9ca6ee6799c6f1017a3b36582761f2f" 
+         "rand2" : "0x4c42cd5d12e49b97f964e1512c49f7cf1276063aba1a8819c941026fec022d" 
        }'  
    
 
+curl -X POST http://3.0.103.121:8000/attack  \
+   -H "Content-Type: application/json"  \
+   --data '{ 
+         "px": "0x51981691a5f1d8df1cafb95a738b9e3ed036ce54f10a74470c470cc2e80f37ad", 
+         "py": "0x9fb904767cf2a990766e3c26e97f045d03fabdc471ef664d31aa662c5972261", 
+         "qx": "0x79be667ef9dcbbac55a06295ce870b07029bfcdb2dce28d959f2815b16f81798",
+         "qy": "0x483ada7726a3c4655da4fbfc0e1108a8fd17b448a68554199c47d08ffb10d4b8", 
+         "rand1" : "0x1d936baef8f07830895d3478a5c8bae129474702798db6a70d8025b7c580a", 
+         "rand2" : "0x4c42cd5d12e49b97f964e1512c49f7cf1276063aba1a8819c941026fec022d" 
+       }'  
 
 # {"status":200,
 #  "result":
