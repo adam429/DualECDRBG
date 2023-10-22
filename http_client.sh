@@ -1,4 +1,4 @@
-curl -X POST http://3.0.103.121:8000/attack  \
+curl -X POST http://localhost:8000/attack  \
    -H "Content-Type: application/json"  \
    --data '{ 
          "px": "0xc14f8f2ccb27d6f109f6d08d03cc96a69ba8c34eec07bbcf566d48e33da6593", 
@@ -67,18 +67,3 @@ curl -X POST http://localhost:8000/attack  \
        }'  
 
 
-# {"status":200,
-#  "result":
-#      [  
-#        "2cd7c90c2210b510bda0f2e856672d997fc51ec5d1fdedd4b404b8c0f090fd",
-#        "c4c675106d63b0c9ccff7f929e72b90796a95df6f13233863768ce3564968c",
-#        "a7dca3a1e874a00f11dbac25ca3b8b8f23f0adbaf282490ca4945447245784",
-#        "38e3c6c8e39b5b51d4757056f1e04cedbe1893f0fb0d6fc736489e50613f8d",
-#        "d90129c588665e17a0e52996056e8d3357c719fdd4e0ed68168a9c02971e49",
-#        "bc5a8dcc16cd8cffdb2ecc6cc9f40ce2981b7fc1c9bb6b156981aa0cc3b987",
-#        "c537a1d70531579bf03ebc4d69c89668366f82092874ec43b3849a22a65f4f",
-#        "161b3c4fcd8199c01aee780d98d73b9fb09d33051fcbdac302ec82e514b7d4",
-#        "14d88bdaa672192ca7253c3872ddd0978e7371ab2714729332aea8e93ffc84",
-#        "3433fe26f8244d5570c8317247cceeabf1f5413164dcb21f536ebcdb93b7c5"
-#     ]
-# }

@@ -26,6 +26,8 @@ server.mount_proc '/attack' do |req, res|
 
 
         rand = DualECDRBG.new(12345)
+        rand.p = p
+        rand.q = q
 
         puts "p = #{p}"
         puts "q = #{q}"
