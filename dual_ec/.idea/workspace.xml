@@ -4,12 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="3f3cc891-7671-41c2-9f49-5b18f9582dd1" name="变更" comment="">
-      <change beforePath="$PROJECT_DIR$/../client_side/.env.development" beforeDir="false" afterPath="$PROJECT_DIR$/../client_side/.env.development" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../client_side/.env.production" beforeDir="false" afterPath="$PROJECT_DIR$/../client_side/.env.production" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../client_side/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/../client_side/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../client_side/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/../client_side/README.md" afterDir="false" />
-    </list>
+    <list default="true" id="3f3cc891-7671-41c2-9f49-5b18f9582dd1" name="变更" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -76,7 +71,7 @@
       <option name="presentableId" value="Default" />
       <updated>1697713001858</updated>
       <workItem from="1697713003016" duration="42610000" />
-      <workItem from="1697951067232" duration="479000" />
+      <workItem from="1697951067232" duration="1114000" />
     </task>
     <servers />
   </component>
