@@ -2,7 +2,7 @@ require 'webrick'
 require 'json'
 require './attacker_multi_thread.rb'
 
-server = WEBrick::HTTPServer.new(:Port => 8000)
+server = WEBrick::HTTPServer.new(:Port => 8000, :DocumentRoot => './client_side/dist')
 
 server.mount_proc '/attack' do |req, res|
 
