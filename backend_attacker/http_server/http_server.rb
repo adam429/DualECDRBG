@@ -1,16 +1,23 @@
+## This file is used to create a http server to receive the input from frontend and return the result to frontend
+
+# run:
+#    ruby http_server.rb
+
+$LOAD_PATH.unshift File.dirname(__FILE__) + '/..'
+
 require 'webrick'
 require 'json'
-require './attacker_multi_thread.rb'
+require 'multi_thread/attacker_multi_thread.rb'
 
-server = WEBrick::HTTPServer.new(:Port => 8000, :DocumentRoot => './client_side/dist')
+
+server = WEBrick::HTTPServer.new(:Port => 8000, :DocumentRoot => '../../frontend_client/dist')
 
 server.mount_proc '/attack' do |req, res|
 
     # POST request
     if req.request_method == 'POST' then
 
-
-
+        # parse the input
         inp = JSON.parse(req.body.gsub(/\n/,''))
 
         puts "input: #{inp}"
@@ -33,7 +40,7 @@ server.mount_proc '/attack' do |req, res|
         puts "q = #{q}"
 
 
-    
+        # brute force to find multiplier
         multiplier = calc_multiplier(p,q)
         puts "p=multiplier*q | multiplier= 0x#{multiplier.to_s(16)}"
     
@@ -45,7 +52,8 @@ server.mount_proc '/attack' do |req, res|
         puts "rand.next = 0x#{rand_output1.to_s(16)}"
         puts "rand.next = 0x#{rand_output2.to_s(16)}"
     
-    
+
+        # brute force to find state
         state = calcState(rand_output1,rand_output2,multiplier,rand)
 
         puts "state = #{state.to_s}"
@@ -63,6 +71,7 @@ server.mount_proc '/attack' do |req, res|
         end
         puts "--------------------"
     
+        # return the result in json format
         res.body = {"status":200, "result":result}.to_json            
     end
 

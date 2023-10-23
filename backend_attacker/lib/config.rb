@@ -21,13 +21,13 @@ module Config
 
   ## cluster node
   CLUSTER_NODES = [
-     "druby://18.141.58.4:80",
-     "druby://18.136.105.15:80",
-     "druby://52.221.216.113:80",
-     "druby://13.229.113.15:80",
+    #  "druby://18.141.58.4:80",
+    #  "druby://18.136.105.15:80",
+    #  "druby://52.221.216.113:80",
+    #  "druby://13.229.113.15:80",
   ]
 
-  # CLUSTER_NODES = ["druby://localhost:80"]
+  CLUSTER_NODES = ["druby://localhost:80"]
 
   NODE_PROCESS = 96
   NODE_MUL_BATCH_SIZE = NODE_PROCESS * CALC_MUL_BATCH_SIZE

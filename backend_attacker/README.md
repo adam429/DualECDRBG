@@ -1,5 +1,11 @@
 # Dual_EC_DRBG attack 
 
+## Install Ruby Library
+
+```
+bundle install
+```
+
 ## Configuration 
 
 In Config.rb you can setup the parameters
@@ -23,12 +29,13 @@ TRUNCATE_NUMBER is how many bytes we hide in output, attacker need brute force t
   SIZE_NUMBER = 64      # 64*4 = 256 bits
 ```
 
-## Run Attack
+## Run Attack in multi thread
 
 run attack script 
 
 ```
-ruby attack.rb
+cd multi_thread
+ruby attack_multi_thread.rb
 ```
 
 attack output
@@ -70,6 +77,47 @@ actual rand.next = 0x26650924cb650aee0e0e998de6bdd3837b87f72f0d5fb338010ea0f9e5d
 actual rand.next = 0xb177aba9e734cd867274f7b1d8ce433b0cd04a89a53fb2bb5dae2de4d6a8f0
 actual rand.next = 0x1735286688d809564a0a905f180f6f5378dc82936f970ccd922eef218e18fa
 actual rand.next = 0x518f0b0f652d6c8ae735c6852e57fa998994308173ff6fc05b9f07208a135f
+```
+
+## Run http server 
+
+run http_server script
+
+```
+cd http_server
+ruby http_server.rb
+```
+
+output listen on 8000 port
+```
+[2023-10-23 20:22:33] INFO  WEBrick 1.7.0
+[2023-10-23 20:22:33] INFO  ruby 3.2.0 (2022-12-25) [x86_64-darwin21]
+[2023-10-23 20:22:33] INFO  WEBrick::HTTPServer#start: pid=56693 port=8000
+```
+
+## Run distribute cluster
+
+start a node
+```
+cd 3_distribute_attacker
+ruby attacker_distribute_cluster_server.rb
+```
+
+change the config.rb, put the nodes ip address to config
+```ruby
+  ## cluster node
+  CLUSTER_NODES = [
+     "druby://18.141.58.4:80",
+     "druby://18.136.105.15:80",
+     "druby://52.221.216.113:80",
+     "druby://13.229.113.15:80",
+  ]
+```
+
+run the client
+```
+cd 3_distribute_attacker
+ruby attacker_distribute_cluster_client.rb
 ```
 
 ## Library

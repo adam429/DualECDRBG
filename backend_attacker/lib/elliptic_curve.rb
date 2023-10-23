@@ -1,5 +1,8 @@
-require './finite_field.rb'
+$LOAD_PATH.unshift File.dirname(__FILE__) + '/..'
 
+require 'lib/finite_field.rb'
+
+# a class to represent elliptic curve
 class EllipticCurve
     attr :a, :b, :p
 
@@ -7,25 +10,30 @@ class EllipticCurve
         inspect
     end
 
+    # return the string of the elliptic curve
     def inspect
         "y^2 = x^3 + #{@a.n}x + #{@b.n} mod #{@p}"
     end
 
+    # initialize the elliptic curve
     def initialize(a, b, p)
         @a = FiniteField.new(a,p)
         @b = FiniteField.new(b,p)
         @p = p
     end
 
+    # check if the point is on the curve
     def check_point?(x, y)
         return true if x == "infinity" && y == "infinity" 
         (y**2)  == (x**3 + @a*x + @b) 
     end
 
+    # create the point on the curve
     def point(x,y)
         Point.new(self, FiniteField.new(x,@p), FiniteField.new(y,@p))
     end
 
+    # a class to represent point on the elliptic curve
     class Point
         attr :x, :y, :elliptic_curve
     
@@ -33,6 +41,7 @@ class EllipticCurve
             inspect(degree)
         end
 
+        # return the string of the point
         def inspect(degree=10)
             if @x=="infinity" && @y=="infinity" 
                 "(infinity)"
@@ -45,6 +54,7 @@ class EllipticCurve
             end
         end
     
+        # initialize the point on the curve with x and y coordinate
         def initialize(elliptic_curve, x, y)
             @elliptic_curve = elliptic_curve
     
@@ -54,10 +64,12 @@ class EllipticCurve
             raise "Point not on curve" unless @elliptic_curve.check_point?(@x, @y)
         end
 
+        # check if the point equal to other point
         def ==(other)
             self.elliptic_curve.inspect == other.elliptic_curve.inspect && self.x == other.x && self.y == other.y
         end
 
+        # multiply the point with number
         def *(n)
             result = Point.new(self.elliptic_curve, "infinity", "infinity")
             multi = self
@@ -69,10 +81,12 @@ class EllipticCurve
             result
         end
 
+        # negate the point
         def -@
             Point.new(self.elliptic_curve, x, -y )
         end
 
+        # minus the point with other point
         def -(obj)
             self + (-obj)
         end
@@ -81,12 +95,15 @@ class EllipticCurve
             return self, other
         end
 
+        # add the point with other point
         def +(obj)
             if obj.is_a?(Point)
                 if self.elliptic_curve.inspect == obj.elliptic_curve.inspect
+                    # infinity is the identity element
                     return obj if (self.x == "infinity" && self.y == "infinity")
                     return self if (obj.x == "infinity" && obj.y == "infinity")
 
+                    # calculate the slope
                     begin
                         if self.x == obj.x && self.y == obj.y
                             m = (3*self.x**2 + self.elliptic_curve.a) * (2*self.y).inverse

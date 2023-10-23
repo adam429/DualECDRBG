@@ -1,5 +1,7 @@
-require './dual_ec_drbg.rb'
-require './config.rb'
+$LOAD_PATH.unshift File.dirname(__FILE__) + '/..'
+
+require 'lib/dual_ec_drbg.rb'
+require 'lib/config.rb'
 
 # Brute force to find multiplier
 def calc_multiplier(p,q)
@@ -19,11 +21,12 @@ def calc_multiplier(p,q)
     return k
 end    
 
-# dual_ec_drbg emulate next() function
+# dual_ec_drbg emulate function
 def to_number(point)  
     return point.x.n
 end
 
+# dual_ec_drbg emulate function
 def truncate(number)
     return number & Config::TRUNCATE_MASK
 end
@@ -71,12 +74,6 @@ end
 
 # predict next random number
 def predict_next(state,p,q)
-    # puts "---------"
-    # puts "p=#{p.to_s(16)}"
-    # puts "q=#{q.to_s(16)}"
-    # puts "state=#{state.to_s(16)}"
-    # puts "@state * p = #{(state * p).to_s(16)}"
-
     ec = EllipticCurve.new(Config::EC_A,Config::EC_B,Config::EC_P)
 
     new_state = to_number(state * p)
@@ -84,14 +81,9 @@ def predict_next(state,p,q)
     output_point = new_state * q
     output = truncate(to_number(output_point))
 
-    # puts "@state * p * q = #{(new_state * q).to_s(16)}"
-    # puts "output = #{output.to_s(16)}"
-    # puts "@state = #{new_state.to_s(16)}"
-    # puts "---------"
-
-
     return new_state,output
 end
+
 
 rand = DualECDRBG.new(12345)
 

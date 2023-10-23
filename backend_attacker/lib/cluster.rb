@@ -1,9 +1,12 @@
+$LOAD_PATH.unshift File.dirname(__FILE__) + '/..'
 require 'drb/drb'
-require './elliptic_curve.rb'
-require './config.rb'
+require 'lib/elliptic_curve.rb'
+require 'lib/config.rb'
 
-
+# a class to run the calculation on the cluster
 class Cluster
+
+    # initialize the cluster
     def initialize(nodes)
         DRb.start_service
 
@@ -14,37 +17,32 @@ class Cluster
         end
     end
 
+    # run the calculation on the cluster
     def run_calc_multiplier_runner(p,q,range)
         raise "some node still running" unless all_idel?
-
-        # range = range.each_slice(range.last/@server.size).with_index.with_object({}) { |(a,i),h|
-        #     h[a.first..a.last]=i }.to_a.map {|x| x[0]}
-        # puts "run_calc_multiplier_runner split range = #{range}"
 
         @server.zip(range).each do |server,r|
             server.run_calc_multiplier_runner(p,q,r)
         end
     end
 
+    # run the calculation on the cluster
     def run_calcState_runner(rand_output1,rand_output2,multiplier,rand,range)
         raise "some node still running" unless all_idel?
-
-        # range = range.each_slice(range.last/@server.size).with_index.with_object({}) { |(a,i),h|
-        #     h[a.first..a.last]=i }.to_a.map {|x| x[0]}
-        # puts "run_calcState_runner split range = #{range}"
 
         @server.zip(range).each do |server,r|
             server.run_calcState_runner(rand_output1,rand_output2,multiplier,rand,r)
         end
     end
 
+    # reload the configuration on the cluster
     def reload_config()
         @server.each do |server|
             server.reload_config(Config::MULTIPLIER,Config::TRUNCATE_NUMBER)
         end
     end
 
-
+    # check if all node is idle
     def all_idel?
         status = @server.map do |server|
             server.get_status
@@ -54,6 +52,8 @@ class Cluster
         status.uniq == ['idle']
     end
 
+    # wait for the result, block the process if some node still running
+    # inquire the result from each node, sleep 1 second between each inquire
     def wait_result
         loop do 
             break if all_idel?
@@ -67,6 +67,7 @@ class Cluster
         return result
     end
 end
+
 
 if __FILE__ == $0
 

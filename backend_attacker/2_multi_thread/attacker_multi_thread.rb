@@ -1,51 +1,19 @@
-require 'parallel'
-require 'drb'
-require './dual_ec_drbg.rb'
-require './cluster.rb'
-require './config.rb'
+$LOAD_PATH.unshift File.dirname(__FILE__) + '/..'
 
+require 'parallel'
+require 'lib/dual_ec_drbg.rb'
+require 'lib/config.rb'
 
 
 # Brute force to find multiplier
 def calc_multiplier(p,q)
     timestamp = Time.now
 
-    batch = Config::NODE_MUL_BATCH_SIZE
-    cluster = Config::CLUSTER_NODES.size
+    batch = Config::CALC_MUL_BATCH_SIZE
+    process = Parallel.processor_count
     current_k = 1
 
     loop do
-        # generate task
-        task = (0..cluster-1).map do |x|
-            current_k+batch*x .. current_k+batch*x+(batch-1)
-        end
-        current_k = current_k + batch*cluster
-
-        # run task
-        # result = task.map do |range|
-        #     puts "range: #{range.first} - #{range.last}"
-        #     calc_multiplier_runner(p,q,range)
-        # end.compact
-
-        puts "task = #{task.inspect}"
-        $nodes.run_calc_multiplier_runner(p,q,task)
-        result = $nodes.wait_result.compact
-
-        if result.size > 0 then
-            puts "calc multiplier time: #{Time.now - timestamp}"
-            return result.first
-        end
-    end
-end    
-
-def calc_multiplier_runner(p,q,range)
-    timestamp = Time.now
-
-    batch = Config::CALC_MUL_BATCH_SIZE
-    process = Parallel.processor_count
-    current_k = range.first
-
-    while current_k <= range.last do
         # generate task
         task = (0..process-1).map do |x|
             current_k+batch*x .. current_k+batch*x+(batch-1)
@@ -69,13 +37,13 @@ def calc_multiplier_runner(p,q,range)
         end.compact
 
         if result.size > 0 then
+            puts "calc multiplier time: #{Time.now - timestamp}"
             return result.first
         end
     end
-    return nil
-end
+end    
 
-# dual_ec_drbg emulate next() function
+# dual_ec_drbg emulate function
 def to_number(point)  
     return point.x.n
 end
@@ -86,46 +54,13 @@ end
 
 # brute force to find state
 def calcState(rand_output1,rand_output2,multiplier,rand)
-
-    batch = Config::NODE_STATE_BATCH_SIZE 
-    cluster = Config::CLUSTER_NODES.size
-    current_k = 0
-
-    timestamp = Time.now
-
-    while current_k<16**Config::TRUNCATE_NUMBER do
-        # generate task
-        task = (0..cluster-1).map do |x|
-            current_k+batch*x .. current_k+batch*x+(batch-1)
-        end
-        current_k = current_k + batch*cluster
-
-        # run task
-        # result = task.map do |range|
-        #     puts "range: #{range.first} - #{range.last}"
-        #     calcState_runner(rand_output1,rand_output2,multiplier,rand,range)
-        # end.compact
-        puts "task = #{task.inspect}"
-        $nodes.run_calcState_runner(rand_output1,rand_output2,multiplier,rand,task)
-        result = $nodes.wait_result.compact
-
-
-        if result.size > 0 then
-            puts "calc state time: #{Time.now - timestamp}"
-            return result.first
-        end
-    end
-end
-
-def calcState_runner(rand_output1,rand_output2,multiplier,rand,range)
-
     timestamp = Time.now
 
     batch = Config::CALC_STATE_BATCH_SIZE
     process = Parallel.processor_count
-    current_k = range.first
+    current_k = 0
 
-    while current_k<=range.last do
+    while current_k<16**Config::TRUNCATE_NUMBER do
         # generate task
         task = (0..process-1).map do |x|
             current_k+batch*x .. current_k+batch*x+(batch-1)
@@ -171,15 +106,16 @@ def calcState_runner(rand_output1,rand_output2,multiplier,rand,range)
         end.compact
 
         if result.size > 0 then
+            puts "calc state time: #{Time.now - timestamp}"
             return result.first
         end
     end
-    return nil
 
 end
 
 # predict next random number
 def predict_next(state,p,q)
+   
     ec = EllipticCurve.new(Config::EC_A,Config::EC_B,Config::EC_P)
 
     new_state = to_number(state * p)
@@ -187,13 +123,12 @@ def predict_next(state,p,q)
     output_point = new_state * q
     output = truncate(to_number(output_point))
 
+
     return new_state,output
 end
 
 if __FILE__ == $0
-    $nodes = Cluster.new(Config::CLUSTER_NODES)
-    $nodes.reload_config
-    
+
     rand = DualECDRBG.new(12345)
 
 
@@ -232,5 +167,4 @@ if __FILE__ == $0
     10.times do
         puts "actual rand.next = 0x#{rand.next.to_s(16)}"
     end
-
 end

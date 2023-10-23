@@ -1,8 +1,13 @@
-require './elliptic_curve.rb'
-require './config.rb'
+$LOAD_PATH.unshift File.dirname(__FILE__) + '/..'
 
+require 'lib/elliptic_curve.rb'
+require 'lib/config.rb'
+
+# a class to run the Dual_EC_DRBG algorithm
 class DualECDRBG
     attr_accessor :ec_p, :ec_a, :ec_b, :p, :q, :truncate_number, :state
+
+    # initialize the Dual_EC_DRBG with seed
     def initialize(seed)
         @state = seed
 
@@ -17,30 +22,21 @@ class DualECDRBG
         @p = Config::MULTIPLIER * @q
     end
 
+    # convert the point to number
     def to_number(point)  
         return point.x.n
     end
 
+    # truncate the number
     def truncate(number)
         return number & Config::TRUNCATE_MASK
     end
 
+    # generate the next random number
     def next
-        # puts "---------"
-        # puts "p=#{@p.to_s(16)}"
-        # puts "q=#{@q.to_s(16)}"
-        # puts "state=#{@state.to_s(16)}"
-        # puts "@state * p = #{(@state * @p).to_s(16)}"
-
         @next_state = to_number(@state * @p)
         output = truncate(to_number(@next_state * @q))
         @state = @next_state
-
-        # puts "@state * p * q = #{(@next_state * @q).to_s(16)}"
-        # puts "output = #{output.to_s(16)}"
-        # puts "@state = #{state.to_s(16)}"
-        # puts "---------"
-       
         return output
     end
 end

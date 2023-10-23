@@ -1,11 +1,16 @@
+# a class for finite field arithmetic
 class FiniteField
+    
+    # a module for modular arithmetic
     module ModularArithmetic
         module_function
       
+        # return the greatest common divisor of x and y
         def gcd(x, y)
           gcdext(x, y).first
         end
         
+        # return the ext greatest common divisor of x and y
         def gcdext(x, y)
           if x < 0
             g, a, b = gcdext(-x, y)
@@ -27,6 +32,7 @@ class FiniteField
           [r0, a0, b0]
         end
         
+        # return the inverse of num modulo mod
         def invert(num, mod)
           g, a, b = gcdext(num, mod)
           unless g == 1
@@ -35,6 +41,7 @@ class FiniteField
           a % mod
         end
         
+        # return the power of base to exp modulo mod
         def powmod(base, exp, mod)
           if exp < 0
             base = invert(base, mod)
@@ -51,7 +58,9 @@ class FiniteField
         end
     end
 
+    # class for reverse operation
     class ReverseFiniteField < FiniteField
+        # minus number with other number
         def -(other)
             if other.is_a?(Integer)
                 FiniteField.new((other - @n) % @p, @p)
@@ -61,6 +70,7 @@ class FiniteField
             end
         end
     
+        # divide number with other number
         def /(other)
             if other.is_a?(Integer) 
                 self.inverse * FiniteField.new(other,@p)
@@ -70,6 +80,7 @@ class FiniteField
             end
         end
 
+        # power number with other number
         def **(other)
             if other.is_a?(Integer) 
                 FiniteField.new(ModularArithmetic.powmod(other, @n, @p) % @p, @p)
@@ -86,10 +97,12 @@ class FiniteField
         inspect
     end
 
+    # return the string of the number
     def inspect
         "#{@n} mod #{@p}"
     end
 
+    # initialize the number with value and modulus
     def initialize(n,p)
         if n.is_a?(FiniteField) 
             @p = p
@@ -104,6 +117,7 @@ class FiniteField
         return ReverseFiniteField.new(@n,@p), other
     end
 
+    # add number with other number
     def +(other)
         if other.is_a?(Integer)
             FiniteField.new((@n + other) % @p, @p)
@@ -113,10 +127,12 @@ class FiniteField
         end
     end
 
+    # negate number
     def -@
         FiniteField.new((@p-@n) % @p, @p)
     end
 
+    # minus number with other number
     def -(other)
         if other.is_a?(Integer)
             FiniteField.new((@n - other) % @p, @p)
@@ -126,6 +142,7 @@ class FiniteField
         end
     end
 
+    # multiply number with other number
     def *(other)
         if other.is_a?(Integer)
             FiniteField.new((@n * other) % @p, @p)
@@ -135,6 +152,7 @@ class FiniteField
         end
     end
 
+    # divide number with other number
     def /(other)
         if other.is_a?(Integer) 
             FiniteField.new((@n * FiniteField.new(other,@p).inverse.n ) % @p, @p)
@@ -144,6 +162,7 @@ class FiniteField
         end
     end
 
+    # power number with other number
     def **(other)
         if other.is_a?(Integer) 
             FiniteField.new(ModularArithmetic.powmod(@n, other, @p) % @p, @p)
@@ -153,6 +172,7 @@ class FiniteField
         end
     end
 
+    # check if the number equal to other number
     def ==(other)
         if other.is_a?(FiniteField)
             if other.p == @p and other.n == @n
@@ -168,7 +188,8 @@ class FiniteField
     def legendre(a, p)
         return a.pow((p - 1) / 2, p)
     end
-    
+
+    # return the square root of the number (mod p)    
     def tonelli(n, p)
         raise "not a square (mod p)" if legendre(n, p) != 1
         q = p - 1
@@ -206,10 +227,12 @@ class FiniteField
         return r
     end
 
+    # return the square root of the number (mod p)
     def sqrt
         return tonelli(@n, @p), @p - tonelli(@n, @p)
     end
 
+    # return the inverse of the number (mod p)
     def inverse
         FiniteField.new(ModularArithmetic.invert(@n, @p) % @p, @p)  
     end
