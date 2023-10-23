@@ -33,7 +33,7 @@
 </template>
 <script setup>
 import elliptic from 'elliptic'
-const EC = elliptic.ec;//有一个s1，生成一个r1。根据r1*d获得s2,由s2 得到 r2
+const EC = elliptic.ec;//
 const ec = new EC('secp256k1')
 import { ref, reactive, computed, watch } from 'vue'
 import worker from './worker?worker&inline'
