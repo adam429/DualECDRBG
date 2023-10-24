@@ -117,7 +117,8 @@ change the config.rb, put the nodes ip address to config
 run the client
 ```
 cd 3_distribute_attacker
-ruby attacker_distribute_cluster_client.rb
+ruby attacker_distribute_cluster_client
+.rb
 ```
 
 ## Library

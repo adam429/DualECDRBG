@@ -81,4 +81,4 @@ if __FILE__ == $0
 
     result = nodes.wait_result
     puts "result = #{result.inspect}"
-end
+en
