@@ -1,9 +1,8 @@
 import axios from 'axios'
 const service = axios.create({
   baseURL: import.meta.env.VITE_APP_URL,
-  timeout: 180000, // 请求超时时间毫秒
-  withCredentials: true, // 异步请求携带cookie
-  // timeout: 5000 // request timeout
+  timeout: 180000,
+  withCredentials: true,
   headers: {
     'Content-Type': 'application/json',
   },

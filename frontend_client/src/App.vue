@@ -10,7 +10,6 @@
       <h4>Q:</h4>
       {{currentParam.q.x + ', ' + currentParam.q.y}}
 
-
     </div>
     <button @click="generateRandomBit">Generate Random Bits</button>
     <div >
@@ -36,7 +35,7 @@ import elliptic from 'elliptic'
 const EC = elliptic.ec;//
 const ec = new EC('secp256k1')
 import { ref, reactive, computed, watch } from 'vue'
-import worker from './worker?worker&inline'
+import worker from './worker?worker&inline' //multi-thread computing
 
 let Q = ''
 
@@ -67,7 +66,7 @@ const currentParam = reactive({
 })
 
 function generateRandomBit() {
-  Q = ec.g.mul(new ec.n.constructor(Math.random() * 100))
+  Q = ec.g.mul(new ec.n.constructor(Math.random() * 100))  //initial params
   n = Math.floor(Math.random() * 1000)
   P = Q.mul(n)
 
@@ -86,7 +85,7 @@ function generateRandomBit() {
   predictedRandomListByAttacker.data.length = 0
 }
 
-function dualECGenerator2(s0, num) {
+function dualECGenerator2(s0, num) { //generator
   const randomList = []
   let s = s0
 
@@ -113,7 +112,7 @@ const r2 = computed(()=>{
 
 const myWorkerList = []
 const totalWorkerNum = 8
-for(let i = 0;i < totalWorkerNum;i++)     {
+for(let i = 0;i < totalWorkerNum;i++)     {    //receive attack result
   myWorkerList[i] = new worker()
   myWorkerList[i].onmessage= e => {
     predictedRandomListByAttacker.data.push(...e.data)
@@ -121,7 +120,7 @@ for(let i = 0;i < totalWorkerNum;i++)     {
   }
 }
 
-function judger(listA,listB) {
+function judger(listA,listB) {  //judger
   let result = ''
   let judgeLength = listA.length
   if(listB.length < listA.length) {
@@ -145,10 +144,10 @@ import { getPredictedListByRuby } from './api/attack.js'
 
 const verificationResultDisplay = ref('')
 
-function initAttack(method) {
+function initAttack(method) {   //web worker attacker
   predictedRandomListByAttacker.data = []
   if (method === 'ruby') {
-    getPredictedListByRuby(
+    getPredictedListByRuby(  //ruby attacker api
         {
           "px": "0x" + currentParam.p.x,
           "py": "0x" + currentParam.p.y,
